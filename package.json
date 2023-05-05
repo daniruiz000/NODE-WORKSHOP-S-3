@@ -1,0 +1,29 @@
+{
+  "name": "node-workshop-s-3",
+  "version": "1.0.0",
+  "description": "Workshop 3 Node",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "start:watch": "nodemon index.js",
+    "lint": "eslint",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky install",
+    "seed:users": "node ./seeds/user.seed.js",
+    "seed:artists": "node ./seeds/artist.seed.js",
+    "seed:songs": "node ./seeds/song.seed.js",
+    "seed:playlist": "node ./seeds/playlist.seed.js",
+    "seed:playlist-relations": "node ./seeds/bookRelations.seed.js",
+    "seed:all": "node ./seeds/user.seed.js && node ./seeds/artist.seed.js && node ./seeds/song.seed.js && node ./seeds/playlist.seed.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^8.39.0",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-n": "^15.7.0",
+    "eslint-plugin-promise": "^6.1.1",
+    "husky": "^8.0.0"
+  }
+}
