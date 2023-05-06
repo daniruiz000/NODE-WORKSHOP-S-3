@@ -18,9 +18,10 @@ const artistList = [
 //  Función de reseteo de documentos de la colección.
 const resetArtists = async () => {
   try {
+    const documents = artistList.map((artist) => new Artist(artist));
     await Artist.collection.drop(); //  Esperamos a que borre los documentos de la colección publisher de la BBDD.
     console.log("Borrados artist");
-    await Artist.insertMany(artistList); //  Esperamos a que inserte los nuevos documentos creados en la colección publisher de la BBDD.
+    await Artist.insertMany(documents); //  Esperamos a que inserte los nuevos documentos creados en la colección publisher de la BBDD.
     console.log("Creados artist correctamente");
   } catch (error) {
     //  Si hay error lanzamos el error por consola.

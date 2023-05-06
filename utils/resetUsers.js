@@ -27,9 +27,10 @@ const userList = [
 //  Función de reseteo de documentos de la colección.
 const resetUsers = async () => {
   try {
+    const documents = userList.map((user) => new User(user));
     await User.collection.drop(); //  Esperamos a que borre los documentos de la colección author de la BBDD.
     console.log("Borrados users");
-    await User.insertMany(userList); //  Esperamos a que inserte los nuevos documentos creados en la colección author de la BBDD.
+    await User.insertMany(documents); //  Esperamos a que inserte los nuevos documentos creados en la colección author de la BBDD.
     console.log("Creados users correctamente");
   } catch (error) {
     //  Si hay error lanzamos el error por consola.

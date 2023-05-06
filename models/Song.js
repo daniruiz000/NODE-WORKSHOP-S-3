@@ -8,8 +8,8 @@ const Schema = mongoose.Schema;
 const songSchema = new Schema(
   {
     title: { type: String, required: true },
-    duration: { type: Number, required: false },
-    releaseYear: { type: Date, required: false },
+    duration: { type: Number, required: true },
+    releaseYear: { type: Number, required: true },
     artist: { type: mongoose.Schema.Types.ObjectId, ref: "Artist", required: false }, // Identificará el id como una referencia de la entidad Publisher relacionando las dos colecciones de la BBDD.
   },
   { timestamps: true } // Cada vez que se modifique un documento refleja la hora y fecha de modificación
