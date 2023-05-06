@@ -192,23 +192,29 @@ router.post("/", async (req, res) => {
 
 //  ------------------------------------------------------------------------------------------
 
-//  Endpoint para eliminar una song de  una playlist :
+//  Endpoint para eliminar una song de una playlist :
 
-router.post("/:id/song", async (req, res) => {
+router.delete("/:id/song", async (req, res) => {
   // Si funciona la escritura...
   try {
     const id = req.params.id; //  Recogemos el id de los parametros de la ruta.
     const playList = await Playlist.findById(id);
 
     if (playList) {
-      const song = req.body.song;
-
-      playList.songs.splice(song);
-      const createdPlaylist = await playList.save();
-      res.json(createdPlaylist); //  Devolvemos el playList actualizado en caso de que exista con ese id.
+      const newSong = req.body.song;
+      if (newSong) {
+        const indexSong = playList.songs.indexOf(newSong);
+        const newSongs = playList.songs.splice(indexSong, 1);
+        playList.songs = newSongs;
+        const createdPlaylist = await playList.save();
+        res.json(createdPlaylist); //  Devolvemos el playList actualizado en caso de que exista con ese id.
+      } else {
+        res.status(404).json({});
+      }
     } else {
-      res.status(404).json({}); //  emos un código 404 y un objeto vacio en caso de que no exista con ese id.
+      res.status(404).json({});
     }
+
     // Si falla la escritura...
   } catch (error) {
     res.status(500).json(error); //  Devolvemos un código de error 500 si falla la escritura y el error.
