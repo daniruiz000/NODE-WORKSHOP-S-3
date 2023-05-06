@@ -153,7 +153,7 @@ router.post("/:id/song", async (req, res) => {
         const createdPlaylist = await playList.save();
         res.json(createdPlaylist); //  Devolvemos el playList actualizado en caso de que exista con ese id.
       } else {
-        res.status(404).json({});
+        res.status(404).json({}).send("Tienes que añadir una canción para borrar");
       }
     } else {
       res.status(404).json({});
@@ -209,7 +209,7 @@ router.delete("/:id/song", async (req, res) => {
         const createdPlaylist = await playList.save();
         res.json(createdPlaylist); //  Devolvemos el playList actualizado en caso de que exista con ese id.
       } else {
-        res.status(404).json({});
+        res.status(404).json({}).send("Tienes que añadir una canción para borrar");
       }
     } else {
       res.status(404).json({});
