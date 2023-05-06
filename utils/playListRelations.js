@@ -52,7 +52,7 @@ const playListRelations = async () => {
       playList.createdBy = randomUser;
 
       const indexRandomSongs = generateRandom(0, songs.length);
-      playList.songs = [songsId.slice(indexRandomSongs, indexRandomSongs + 5)];
+      playList.songs = songsId.slice(indexRandomSongs, indexRandomSongs + 5);
 
       await playList.save();
     }

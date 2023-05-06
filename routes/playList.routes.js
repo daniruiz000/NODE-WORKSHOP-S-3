@@ -147,14 +147,18 @@ router.post("/:id/song", async (req, res) => {
     const playList = await Playlist.findById(id);
 
     if (playList) {
-      const song = req.body.song;
-
-      playList.songs.push(song);
-      const createdPlaylist = await playList.save();
-      res.json(createdPlaylist); //  Devolvemos el playList actualizado en caso de que exista con ese id.
+      const newSong = req.body.song;
+      if (newSong) {
+        playList.songs.push(newSong);
+        const createdPlaylist = await playList.save();
+        res.json(createdPlaylist); //  Devolvemos el playList actualizado en caso de que exista con ese id.
+      } else {
+        res.status(404).json({});
+      }
     } else {
-      res.status(404).json({}); //  emos un código 404 y un objeto vacio en caso de que no exista con ese id.
+      res.status(404).json({});
     }
+
     // Si falla la escritura...
   } catch (error) {
     res.status(500).json(error); //  Devolvemos un código de error 500 si falla la escritura y el error.

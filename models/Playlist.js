@@ -12,7 +12,7 @@ const playListSchema = new Schema(
   {
     name: { type: String, required: true },
     songs: { type: mongoose.Schema.Types.Array, ref: "Song", required: false },
-    createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: false },
+    createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   },
   { timestamps: true } // Cada vez que se modifique un documento refleja la hora y fecha de modificación
 );
