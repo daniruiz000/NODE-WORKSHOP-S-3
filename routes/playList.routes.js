@@ -15,7 +15,7 @@ const { resetSongs } = require("../utils/resetSongs.js");
 
 // Importamos la función que nos sirve para resetear las relaciones entre las coleciones:
 const { playListRelations } = require("../utils/playListRelations.js");
-const { Artist } = require("../models/Artist.js");
+
 const { resetArtists } = require("../utils/resetArtists.js");
 
 // Router propio de playList suministrado por express.Router:

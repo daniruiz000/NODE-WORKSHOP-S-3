@@ -3,7 +3,6 @@ const express = require("express");
 
 // Importamos el modelo que nos sirve tanto para importar datos como para leerlos:
 const { Artist } = require("../models/Artist.js");
-const { Playlist } = require("../models/Playlist.js");
 
 // Importamos la función que nos sirve para resetear los publisher:
 const { resetArtists } = require("../utils/resetArtists.js");

@@ -11,7 +11,7 @@ const config = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   serverSelectionTimeoutMS: 5000,
-  dbName: DB_NAME, // BBDD a la que tiene que atacar
+  dbName: "workshop-s3-PRODUCTION", // BBDD a la que tiene que atacar
 };
 // Nos conectamos a Moongoose
 const connect = async () => {
