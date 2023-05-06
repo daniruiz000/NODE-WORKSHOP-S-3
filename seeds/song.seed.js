@@ -4,17 +4,17 @@ const mongoose = require("mongoose");
 // Conexión a la base de datos:
 const { connect } = require("../db"); // Importamos el archivo de conexión a la BBDD
 
-// Importamos la función que nos sirve para resetear los publisher:
-const { resetArtists } = require("../utils/resetArtists");
+// Importamos la función que nos sirve para resetear los book:
+const { resetSongs } = require("../utils/resetSongs");
 
 //  Función asíncrona para conectar con la BBDD y ejecutar la función de reseteo de datos.
 const seedFunction = async () => {
   try {
     await connect(); //  Esperamos a que conecte con la BBDD.
-    await resetArtists(); //  Esperamos que ejecute la función de reseteo de publisher.
+    await resetSongs(); //  Esperamos que ejecute la función de reseteo de libros.
   } catch (error) {
     //  Si hay error lanzamos el error por consola.
-    console(error);
+    console.error(error);
   } finally {
     //   Finalmente desconecta de la BBDD.
     await mongoose.disconnect();

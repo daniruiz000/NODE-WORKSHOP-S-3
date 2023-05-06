@@ -2,10 +2,11 @@
 const express = require("express");
 
 // Importamos el modelo que nos sirve tanto para importar datos como para leerlos:
-const { Publisher } = require("../models/Publisher.js");
-const { Book } = require("../models/Book.js");
+const { Artist } = require("../models/Artist.js");
+const { Playlist } = require("../models/Playlist.js");
+
 // Importamos la función que nos sirve para resetear los publisher:
-const { resetPublishers } = require("../utils/resetPublishers.js");
+const { resetArtists } = require("../utils/resetArtists.js");
 
 // Router propio de publisher:
 const router = express.Router();
@@ -14,7 +15,7 @@ const router = express.Router();
 // ------------------------------ ENDPOINTS DE /publisher -------------------------------------
 // --------------------------------------------------------------------------------------------
 
-/*  Endpoint para recuperar todos los publishers de manera paginada en función de un limite de elementos a mostrar
+/*  Endpoint para recuperar todos los artists de manera paginada en función de un limite de elementos a mostrar
 por página para no saturar al navegador (CRUD: READ):
 */
 
@@ -25,11 +26,11 @@ router.get("/", async (req, res) => {
     const page = req.query.page;
     const limit = parseInt(req.query.limit);
 
-    const publishers = await Publisher.find() // Devolvemos los publishers si funciona. Con modelo.find().
+    const artists = await Artist.find() // Devolvemos los artists si funciona. Con modelo.find().
       .limit(limit) // La función limit se ejecuta sobre el .find() y le dice que coga un número limitado de elementos, coge desde el inicio a no ser que le añadamos...
       .skip((page - 1) * limit); // La función skip() se ejecuta sobre el .find() y se salta un número determinado de elementos y con este cálculo podemos paginar en función del limit. // Con populate le indicamos que si recoge un id en la propiedad señalada rellene con los campos de datos que contenga ese id
     //  Creamos una respuesta más completa con info de la API y los datos solicitados por el publisher:
-    const totalElements = await Publisher.countDocuments(); //  Esperamos aque realice el conteo del número total de elementos con modelo.countDocuments()
+    const totalElements = await Artist.countDocuments(); //  Esperamos aque realice el conteo del número total de elementos con modelo.countDocuments()
     const totalPagesByLimit = Math.ceil(totalElements / limit); // Para saber el número total de páginas que se generan en función del limit. Math.ceil() nos elimina los decimales.
 
     // Respuesta Completa:
@@ -37,7 +38,7 @@ router.get("/", async (req, res) => {
       totalItems: totalElements,
       totalPages: totalPagesByLimit,
       currentPage: page,
-      data: publishers,
+      data: artists,
     };
     // Enviamos la respuesta como un json.
     res.json(response);
@@ -60,18 +61,11 @@ router.get("/:id", async (req, res) => {
   // Si funciona la lectura...
   try {
     const id = req.params.id; //  Recogemos el id de los parametros de la ruta.
-    const publisher = await Publisher.findById(id); //  Buscamos un documentos con un id determinado dentro de nuestro modelo con modelo.findById(id a buscar).
-    if (publisher) {
-      const temporalPublisher = publisher.toObject();
-      const includeBooks = req.query.includeBooks === "true";
-
-      if (includeBooks) {
-        const books = await Book.find({ publisher: id }); // Busco en la entidad Car los coches que correspondena ese id de User.
-        temporalPublisher.books = books; // Añadimos la propiedad cars al usuario temporal con los coches que hemos recogido de la entidad Car.
-      }
-      res.json(temporalPublisher); //  Si existe el publisher lo mandamos como respuesta en modo json.
+    const artist = await Artist.findById(id); //  Buscamos un documentos con un id determinado dentro de nuestro modelo con modelo.findById(id a buscar).
+    if (artist) {
+      res.json(artist); //  Si existe el artist lo mandamos como respuesta en modo json.
     } else {
-      res.status(404).json({}); //    Si no existe el publisher se manda un json vacio y un código 400.
+      res.status(404).json({}); //    Si no existe el artist se manda un json vacio y un código 400.
     }
 
     // Si falla la lectura...
@@ -81,24 +75,24 @@ router.get("/:id", async (req, res) => {
 });
 
 // Ejemplo de REQ:
-// http://localhost:3000/publisher/id del publisher a buscar
+// http://localhost:3000/artist/id del artist a buscar
 
 //  ------------------------------------------------------------------------------------------
 
-//  Endpoint para buscar un publisher por el nombre ( modelo.findById({name: name})) (CRUD: Operación Custom. No es CRUD):
+//  Endpoint para buscar un artist por el nombre ( modelo.findById({name: name})) (CRUD: Operación Custom. No es CRUD):
 
 router.get("/name/:name", async (req, res) => {
-  const publisherName = req.params.name;
+  const artistName = req.params.name;
   // Si funciona la lectura...
   try {
-    // const publisher = await publisher.find({ firstName: name }); //Si quisieramos realizar una busqueda exacta, tal y como está escrito.
-    const publisher = await Publisher.find({ name: new RegExp("^" + publisherName.toLowerCase(), "i") }); // Devolvemos los books si funciona. Con modelo.find().
+    // const artist = await artist.find({ firstName: name }); //Si quisieramos realizar una busqueda exacta, tal y como está escrito.
+    const artist = await Artist.find({ name: new RegExp("^" + artistName.toLowerCase(), "i") }); // Devolvemos los playlist si funciona. Con modelo.find().
 
     //  Esperamos a que realice una busqueda en la que coincida el texto pasado por query params para la propiedad determinada pasada dentro de un objeto, porqué tenemos que pasar un objeto, sin importar mayusc o minusc.
-    if (publisher?.length) {
-      res.json(publisher); //  Si existe el publisher lo mandamos en la respuesta como un json.
+    if (artist?.length) {
+      res.json(artist); //  Si existe el artist lo mandamos en la respuesta como un json.
     } else {
-      res.status(404).json([]); //   Si no existe el publisher se manda un json con un array vacio porque la respuesta en caso de haber tenido resultados hubiera sido un array y un mandamos un código 404.
+      res.status(404).json([]); //   Si no existe el artist se manda un json con un array vacio porque la respuesta en caso de haber tenido resultados hubiera sido un array y un mandamos un código 404.
     }
 
     // Si falla la lectura...
@@ -108,7 +102,7 @@ router.get("/name/:name", async (req, res) => {
 });
 
 // Ejemplo de REQ:
-// http://localhost:3000/publisher/name/nombre del publisher a buspublisher
+// http://localhost:3000/artist/name/nombre del artist a busartist
 
 //  ------------------------------------------------------------------------------------------
 
@@ -117,9 +111,9 @@ router.get("/name/:name", async (req, res) => {
 router.post("/", async (req, res) => {
   // Si funciona la escritura...
   try {
-    const publisher = new Publisher(req.body); //     Un nuevo publisher es un nuevo modelo de la BBDD que tiene un Scheme que valida la estructura de esos datos que recoge del body de la petición.
-    const createdPublisher = await publisher.save(); // Esperamos a que guarde el nuevo publisher creado en caso de que vaya bien. Con el metodo .save().
-    return res.status(201).json(createdPublisher); // Devolvemos un código 201 que significa que algo se ha creado y el publisher creado en modo json.
+    const artist = new Artist(req.body); //     Un nuevo artist es un nuevo modelo de la BBDD que tiene un Scheme que valida la estructura de esos datos que recoge del body de la petición.
+    const createdArtist = await artist.save(); // Esperamos a que guarde el nuevo artist creado en caso de que vaya bien. Con el metodo .save().
+    return res.status(201).json(createdArtist); // Devolvemos un código 201 que significa que algo se ha creado y el artist creado en modo json.
 
     // Si falla la escritura...
   } catch (error) {
@@ -127,18 +121,18 @@ router.post("/", async (req, res) => {
   }
 });
 
-/* Petición tipo de POST para añadir un nuevo publisher (añadimos al body el nuevo publisher con sus propiedades que tiene que cumplir con el Scheme de nuestro modelo) identificado por su id:
- const newPublisher = {name: "Prueba Nombre", country: "Prueba country"}
- fetch("http://localhost:3000/publisher/",{"body": JSON.stringify(newPublisher),"method":"POST","headers":{"Accept":"application/json","Content-Type":"application/json"}}).then((data)=> console.log(data)) */
+/* Petición tipo de POST para añadir un nuevo artist (añadimos al body el nuevo artist con sus propiedades que tiene que cumplir con el Scheme de nuestro modelo) identificado por su id:
+ const newArtist = {name: "Prueba Nombre", country: "Prueba country"}
+ fetch("http://localhost:3000/artist/",{"body": JSON.stringify(newArtist),"method":"POST","headers":{"Accept":"application/json","Content-Type":"application/json"}}).then((data)=> console.log(data)) */
 //  ------------------------------------------------------------------------------------------
 
-//  Endpoint para resetear los datos de publisher:
+//  Endpoint para resetear los datos de artist:
 
 router.delete("/reset", async (req, res) => {
   // Si funciona el reseteo...
   try {
-    await resetPublishers();
-    res.send("Datos Publisher reseteados");
+    await resetArtists();
+    res.send("Datos Artist reseteados");
 
     // Si falla el reseteo...
   } catch (error) {
@@ -149,15 +143,15 @@ router.delete("/reset", async (req, res) => {
 
 //  ------------------------------------------------------------------------------------------
 
-//  Endpoin para eliminar publisher identificado por id (CRUD: DELETE):
+//  Endpoin para eliminar artist identificado por id (CRUD: DELETE):
 
 router.delete("/:id", async (req, res) => {
   // Si funciona el borrado...
   try {
     const id = req.params.id; //  Recogemos el id de los parametros de la ruta.
-    const publisherDeleted = await Publisher.findByIdAndDelete(id); // Esperamos a que nos devuelve la info del publisher eliminado que busca y elimina con el metodo findByIdAndDelete(id del publisher a eliminar).
-    if (publisherDeleted) {
-      res.json(publisherDeleted); //  Devolvemos el publisher eliminado en caso de que exista con ese id.
+    const artistDeleted = await Artist.findByIdAndDelete(id); // Esperamos a que nos devuelve la info del artist eliminado que busca y elimina con el metodo findByIdAndDelete(id del artist a eliminar).
+    if (artistDeleted) {
+      res.json(artistDeleted); //  Devolvemos el artist eliminado en caso de que exista con ese id.
     } else {
       res.status(404).json({}); //  Devolvemos un código 404 y un objeto vacio en caso de que no exista con ese id.
     }
@@ -168,9 +162,9 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
-/* Petición tipo DELETE para eliminar un publisher (no añadimos body a la busqueda y recogemos el id de los parametros de la ruta) identificado por su id:
+/* Petición tipo DELETE para eliminar un artist (no añadimos body a la busqueda y recogemos el id de los parametros de la ruta) identificado por su id:
 
-fetch("http://localhost:3000/publisher/id del publisher a borrar",{"method":"DELETE","headers":{"Accept":"application/json","Content-Type":"application/json"}}).then((data)=> console.log(data))
+fetch("http://localhost:3000/artist/id del artist a borrar",{"method":"DELETE","headers":{"Accept":"application/json","Content-Type":"application/json"}}).then((data)=> console.log(data))
 */
 
 //  ------------------------------------------------------------------------------------------
@@ -181,9 +175,9 @@ router.put("/:id", async (req, res) => {
   // Si funciona la actualización...
   try {
     const id = req.params.id; //  Recogemos el id de los parametros de la ruta.
-    const publisherUpdated = await Publisher.findByIdAndUpdate(id, req.body, { new: true }); // Esperamos que devuelva la info del publisher actualizado al que tambien hemos pasado un objeto con los campos q tiene que acualizar en la req del body de la petición. {new: true} Le dice que nos mande el publisher actualizado no el antiguo. Lo busca y elimina con el metodo findByIdAndDelete(id del publisher a eliminar).
-    if (publisherUpdated) {
-      res.json(publisherUpdated); //  Devolvemos el publisher actualizado en caso de que exista con ese id.
+    const artistUpdated = await Artist.findByIdAndUpdate(id, req.body, { new: true }); // Esperamos que devuelva la info del artist actualizado al que tambien hemos pasado un objeto con los campos q tiene que acualizar en la req del body de la petición. {new: true} Le dice que nos mande el artist actualizado no el antiguo. Lo busca y elimina con el metodo findByIdAndDelete(id del artist a eliminar).
+    if (artistUpdated) {
+      res.json(artistUpdated); //  Devolvemos el artist actualizado en caso de que exista con ese id.
     } else {
       res.status(404).json({}); //  Devolvemos un código 404 y un objeto vacio en caso de que no exista con ese id.
     }
@@ -195,11 +189,11 @@ router.put("/:id", async (req, res) => {
 });
 
 /* Petición tipo de PUT para actualizar datos concretos (en este caso el tlf) recogidos en el body,
-de un publisher en concreto (recogemos el id de los parametros de la ruta ):
+de un artist en concreto (recogemos el id de los parametros de la ruta ):
 
-fetch("http://localhost:3000/publisher/id del publisher a actualizar",{"body": JSON.stringify({country: "Prueba country"}),"method":"PUT","headers":{"Accept":"application/json","Content-Type":"application/json"}}).then((data)=> console.log(data))
+fetch("http://localhost:3000/artist/id del artist a actualizar",{"body": JSON.stringify({country: "Prueba country"}),"method":"PUT","headers":{"Accept":"application/json","Content-Type":"application/json"}}).then((data)=> console.log(data))
 */
 
 //  ------------------------------------------------------------------------------------------
 // Exportamos
-module.exports = { publisherRouter: router };
+module.exports = { artistRouter: router };

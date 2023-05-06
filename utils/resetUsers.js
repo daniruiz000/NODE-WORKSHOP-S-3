@@ -4,31 +4,6 @@ const { User } = require("../models/User.js");
 // Creamos 50 autores aleatoriamente y los vamos añadiendo al array de autores:
 const userList = [
   {
-    firstName: "Juanito",
-    lastName: "Colombia",
-    email: "juanito@gmail.com",
-  },
-  {
-    firstName: "Maria",
-    lastName: "Lopez",
-    email: "marialopez@hotmail.com",
-  },
-  {
-    firstName: "Pedro",
-    lastName: "Gonzalez",
-    email: "pedro.gonzalez@gmail.com",
-  },
-  {
-    firstName: "Carla",
-    lastName: "Ramirez",
-    email: "carlaramirez@gmail.com",
-  },
-  {
-    firstName: "Ricardo",
-    lastName: "Gomez",
-    email: "ricardogomez@yahoo.com",
-  },
-  {
     firstName: "Ana",
     lastName: "Martinez",
     email: "ana.martinez@gmail.com",
@@ -47,11 +22,6 @@ const userList = [
     firstName: "Jorge",
     lastName: "Perez",
     email: "jorge.perez@yahoo.com",
-  },
-  {
-    firstName: "Lucia",
-    lastName: "Sanchez",
-    email: "lucia.sanchez@hotmail.com",
   },
 ];
 //  Función de reseteo de documentos de la colección.

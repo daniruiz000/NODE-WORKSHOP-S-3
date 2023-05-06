@@ -18,7 +18,7 @@ const playListSchema = new Schema(
 );
 
 // Creamos un modelo para que siempre que creamos un author valide contra el Schema que hemos creado para ver si es valido.
-const Artist = mongoose.model("Artist", playListSchema);
+const Playlist = mongoose.model("Playlist", playListSchema);
 
 //  Exportamos el modelo para poder usarlo fuera.
-module.exports = { Artist };
+module.exports = { Playlist };

@@ -2,10 +2,10 @@
 const express = require("express");
 
 // Importamos los routers creados.
-const { bookRouter } = require("./routes/book.routes"); //  LO IMPORTAMOS COMO UN OBJETO.
-const { authorRouter } = require("./routes/author.routes");
-const { publisherRouter } = require("./routes/publisher.routes");
-
+const { userRouter } = require("./routes/user.routes"); //  LO IMPORTAMOS COMO UN OBJETO.
+const { artistRouter } = require("./routes/artist.routes");
+const { songRouter } = require("./routes/song.routes");
+const { playListRouter } = require("./routes/playList.routes");
 // --------------------------------------------------------------------------------------------
 
 //  Función asíncrona que gestiona nuestra API.
@@ -37,9 +37,10 @@ const main = async () => {
 
   // Asignación de los routers para las diferentes rutas creadas:
   //  Usamos las rutas (el orden es importante más restrictivos a menos):
-  server.use("/publisher", publisherRouter); //  Le decimos al server que utilice el publisherRouter importado para gestionar las rutas que tengan "/publisher".
-  server.use("/author", authorRouter); //  Le decimos al server que utilice el authorRouter importado para gestionar las rutas que tengan "/author".
-  server.use("/book", bookRouter); //  Le decimos al server que utilice el bookRouter importado para gestionar las rutas que tengan "/book".
+  server.use("/playlist", playListRouter); //  Le decimos al server que utilice el playListRouter importado para gestionar las rutas que tengan "/playList".
+  server.use("/song", songRouter); //  Le decimos al server que utilice el songRouter importado para gestionar las rutas que tengan "/song".
+  server.use("/artist", artistRouter); //  Le decimos al server que utilice el artistRouter importado para gestionar las rutas que tengan "/artist".
+  server.use("/user", userRouter); //  Le decimos al server que utilice el userRouter importado para gestionar las rutas que tengan "/user".
   server.use("/", routerHome); //  Decimos al server que utilice el routerHome en la raíz.
 
   //  Levantamos el server en el puerto indicado:

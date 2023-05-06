@@ -2,17 +2,16 @@
 const mongoose = require("mongoose");
 
 // Conexión a la base de datos:
-const { connect } = require("../db");
+const { connect } = require("../db"); // Importamos el archivo de conexión a la BBDD
 
-// Importamos la función que nos sirve para relacionar los documentos de nuestra BBDD:
-const { bookRelations } = require("../utils/bookRelations");
+// Importamos la función que nos sirve para resetear los playlists:
+const { resetPlaylists } = require("../utils/resetPlaylists");
 
 //  Función asíncrona para conectar con la BBDD y ejecutar la función de reseteo de datos.
-const seedBookRelations = async () => {
+const seedFunction = async () => {
   try {
     await connect(); //  Esperamos a que conecte con la BBDD.
-    await bookRelations(); //  Esperamos que ejecute la función.
-    console.log("Datos relacionados");
+    await resetPlaylists(); //  Esperamos que ejecute la función de reseteo de playlists.
   } catch (error) {
     //  Si hay error lanzamos el error por consola.
     console(error);
@@ -22,4 +21,4 @@ const seedBookRelations = async () => {
   }
 };
 
-seedBookRelations(); //  Llamamos a la función.
+seedFunction(); //  Llamamos a la función.
