@@ -6,17 +6,7 @@ const { Playlist } = require("../models/Playlist.js");
 
 // Importamos la función que nos sirve para resetear los playList:
 const { resetPlaylists } = require("../utils/resetPlaylists.js");
-
-// Importamos la función que nos sirve para resetear los autores:
-const { resetUsers } = require("../utils/resetUsers.js");
-
-// Importamos la función que nos sirve para resetear las editoriales:
-const { resetSongs } = require("../utils/resetSongs.js");
-
-// Importamos la función que nos sirve para resetear las relaciones entre las coleciones:
 const { playListRelations } = require("../utils/playListRelations.js");
-
-const { resetArtists } = require("../utils/resetArtists.js");
 
 // Router propio de playList suministrado por express.Router:
 const router = express.Router();
@@ -176,9 +166,16 @@ router.post("/:id/song", async (req, res) => {
 router.post("/", async (req, res) => {
   // Si funciona la escritura...
   try {
-    const playList = new Playlist(req.body); //     Un nuevo playList es un nuevo modelo de la BBDD que tiene un Scheme que valida la estructura de esos datos que recoge del body de la petición.
-    const createdPlaylist = await playList.save(); // Esperamos a que guarde el nuevo playList creado en caso de que vaya bien. Con el metodo .save().
-    return res.status(201).json(createdPlaylist); // Devolvemos un código 201 que significa que algo se ha creado y el playList creado en modo json.
+    const songs = req.body.songs;
+    const name = req.body.name;
+    const createdBy = req.body.createdBy;
+    if (songs && name && createdBy) {
+      const playList = new Playlist(req.body); //     Un nuevo playList es un nuevo modelo de la BBDD que tiene un Scheme que valida la estructura de esos datos que recoge del body de la petición.
+      const createdPlaylist = await playList.save(); // Esperamos a que guarde el nuevo playList creado en caso de que vaya bien. Con el metodo .save().
+      return res.status(201).json(createdPlaylist); // Devolvemos un código 201 que significa que algo se ha creado y el playList creado en modo json.
+    } else {
+      res.status(401).send("Tienes que añadir uns name, unas canciones y un creador");
+    }
 
     // Si falla la escritura...
   } catch (error) {
@@ -235,10 +232,6 @@ router.delete("/reset", async (req, res, next) => {
 
     // Si all es true resetearemos todos los datos de nuestras coleciones y las relaciones entre estas.
     if (all) {
-      await resetPlaylists();
-      await resetUsers();
-      await resetArtists();
-      await resetSongs();
       await playListRelations();
       res.send("Datos reseteados y Relaciones reestablecidas");
     } else {

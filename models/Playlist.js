@@ -11,7 +11,7 @@ const Schema = mongoose.Schema;
 const playListSchema = new Schema(
   {
     name: { type: String, required: true },
-    songs: { type: mongoose.Schema.Types.Array, ref: "Song", required: false },
+    songs: { type: mongoose.Schema.Types.Array, ref: "Song", required: true },
     createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   },
   { timestamps: true } // Cada vez que se modifique un documento refleja la hora y fecha de modificación
