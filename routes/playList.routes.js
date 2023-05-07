@@ -204,10 +204,9 @@ router.delete("/:id/song", async (req, res) => {
       const newSong = req.body.song;
       if (newSong) {
         const indexSong = playList.songs.indexOf(newSong);
-        const newSongs = playList.songs.splice(indexSong, 1);
-        playList.songs = newSongs;
+        playList.songs.splice(indexSong, 1);
         const createdPlaylist = await playList.save();
-        res.json(createdPlaylist); //  Devolvemos el playList actualizado en caso de que exista con ese id.
+        res.json(createdPlaylist);
       } else {
         res.status(404).json({}).send("Tienes que añadir una canción para borrar");
       }
