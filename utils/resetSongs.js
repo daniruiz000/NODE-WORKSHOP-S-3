@@ -18,12 +18,12 @@ const resetSongs = async () => {
 
     const songsList = [];
     for (let i = 0; i < 50; i++) {
-      const newSong = new Song({
+      const newSong = {
         title: faker.music.songName(),
         duration: faker.datatype.number({ min: 120, max: 400 }),
         releaseYear: faker.datatype.number({ min: 1965, max: 2021 }),
         artist: artists[generateRandom(0, artists.length)],
-      });
+      };
 
       songsList.push(newSong);
     }

@@ -31,11 +31,11 @@ const resetPlaylists = async () => {
 
     for (let i = 0; i < 4; i++) {
       const indexRandomSongs = generateRandom(0, songs.length);
-      const newPlaylist = new Playlist({
+      const newPlaylist = {
         name: faker.music.songName(),
         songs: songsId.slice(indexRandomSongs, indexRandomSongs + 5),
         createdBy: users[generateRandom(0, users.length)],
-      });
+      };
 
       playListArray.push(newPlaylist);
     }
